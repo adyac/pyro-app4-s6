@@ -41,8 +41,14 @@ def dh2T( r , d , theta, alpha ):
             Matrice de transformation
 
     """
-    
-    T = np.zeros((4,4))
+
+
+    T = np.array([
+        [np.cos(theta), -np.sin(theta)*np.cos(alpha),  np.sin(theta)*np.sin(alpha), r*np.cos(theta)],
+        [np.sin(theta),  np.cos(theta)*np.cos(alpha), -np.cos(theta)*np.sin(alpha), r*np.sin(theta)],
+        [0            ,               np.sin(alpha),                np.cos(alpha),                d],
+        [0            ,                           0,                            0,                1]
+    ])
     
     ###################
     # Votre code ici
@@ -71,10 +77,21 @@ def dhs2T( r , d , theta, alpha ):
 
     """
     
+    
     WTT = np.zeros((4,4))
     
     ###################
     # Votre code ici
+    dof = len(r) # nombre de joints du robot
+    WTT = np.eye(4) # Matrice de transformation vide
+    
+    # Ttérer à travers ch joint.
+    # Multiplier la matrice du nouveau joint avec la matrice du joint
+    # précédent.
+    for i in range(dof):
+        WTT = np.dot(WTT, dh2T(r[i], d[i], theta[i], alpha[i]))
+    return WTT
+
     ###################
     
     return WTT
@@ -99,6 +116,18 @@ def f(q):
     
     ###################
     # Votre code ici
+
+    # Paramètres du robot KUKA
+    r_vect= np.array([0.147,0.155,0,0])
+    d= np.array([0,0,0.135,0.217])
+    theta= np.array([q[0], q[1], q[2]-np.pi/2, q[3]])
+    alpha=np.array([np.pi/2, q[2], 0, q[4]])
+
+    WTT = dhs2T(r_vect, d, theta, alpha)
+    
+    # paramètres position de la matrice de transformation
+    r = WTT[:3, 3]
+
     ###################
     
     return r
