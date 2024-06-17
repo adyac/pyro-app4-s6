@@ -2,14 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu May 14 23:19:16 2020
-
 @author: alex
 ------------------------------------
-
-
 Fichier d'amorce pour les livrables de la problématique GRO640'
-
-
 """
 
 import numpy as np
@@ -41,10 +36,6 @@ def dh2T( r , d , theta, alpha ):
             Matrice de transformation
 
     """
-<<<<<<< Updated upstream
-    
-    T = np.zeros((4,4))
-=======
 
     T = np.array([
         [np.cos(theta), -np.sin(theta)*np.cos(alpha),  np.sin(theta)*np.sin(alpha), r*np.cos(theta)],
@@ -52,7 +43,6 @@ def dh2T( r , d , theta, alpha ):
         [0            ,               np.sin(alpha),                np.cos(alpha),                d],
         [0            ,                           0,                            0,                1]
     ])
->>>>>>> Stashed changes
     
     return T
 
@@ -76,17 +66,10 @@ def dhs2T( r , d , theta, alpha ):
               Matrice de transformation totale de l'outil
 
     """
-<<<<<<< Updated upstream
-    
-=======
->>>>>>> Stashed changes
     WTT = np.zeros((4,4))
     
     ###################
     # Votre code ici
-<<<<<<< Updated upstream
-    ###################
-=======
     dof = len(r) # nombre de joints du robot
     WTT = np.eye(4) # Matrice de transformation vide
    
@@ -96,7 +79,6 @@ def dhs2T( r , d , theta, alpha ):
         # précédent.
         WTT = np.dot(WTT, dh2T(r[i], d[i], theta[i], alpha[i]))
     return WTT
->>>>>>> Stashed changes
     
 
 
@@ -112,16 +94,9 @@ def f(q):
         Effector (x,y,z) position
     """
     r = np.zeros((3,1))
-<<<<<<< Updated upstream
-    
-    ###################
-    # Votre code ici
-    ###################
-    
-=======
 
     # Paramètres du robot KUKA
-    r_vect= np.array([0.147,0.155,0,0])
+    r_vect= np.array([0.067, 0.08 ,0.155,0,0])
     d= np.array([0,0,0.135,0.217])
     theta= np.array([q[0], q[1], q[2]-np.pi/2, q[3]])
     alpha=np.array([np.pi/2, q[2], 0, q[4]])
@@ -130,7 +105,6 @@ def f(q):
     
     # paramètres position de la matrice de transformation
     r = WTT[:3, 3] # prend les 3 premiers elem de la 4e colonne de la matrice transf
->>>>>>> Stashed changes
     return r
 
 
@@ -413,7 +387,4 @@ def q2torque( q, dq, ddq , manipulator ):
         # torque = H*ddq + c* dq + gravité
         tau[:, i] = H @ ddq[:, i] + C @ dq[:, i] + g
 
-    return tau
-/    
-    
-    return tau
+    return tau   
