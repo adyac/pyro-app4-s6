@@ -414,6 +414,6 @@ def q2torque( q, dq, ddq , manipulator ):
         tau[:, i] = H @ ddq[:, i] + C @ dq[:, i] + g
 
     return tau
-    
+/    
     
     return tau
