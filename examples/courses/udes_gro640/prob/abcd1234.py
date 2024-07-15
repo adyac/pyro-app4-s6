@@ -334,6 +334,31 @@ def r2q( r, dr, ddr , manipulator ):
     dq = np.zeros((n,l))
     ddq = np.zeros((n,l))
     
+    def inverse_kinematics(r, link_lengths):
+        # r is a 3D Cartesian position vector [x, y, z]
+        x, y, z = r
+        L1, L2, L3 = link_lengths  # Lengths of the links
+        
+        # Calculate joint angles q for a 3-DOF manipulator
+        q1 = np.arctan2(y, x)
+        
+        # Project onto the xy-plane for remaining calculations
+        r_xy = np.sqrt(x**2 + y**2)
+        
+        q3 = np.arctan2(z, r_xy - L1)
+        
+        # Calculate q2 using the Law of Cosines
+        c2 = (r_xy**2 + (z - L1)**2 - L2**2 - L3**2) / (2 * L2 * L3)
+        s2 = np.sqrt(1 - c2**2)
+        q2 = np.arctan2(s2, c2)
+        
+        return np.array([q1, q2, q3])
+
+    # Example usage in your r2q function
+    link_lengths = np.array([L1, L2, L3])  # Lengths of the links
+    q[:, i] = inverse_kinematics(r[:, i], link_lengths)
+
+
     # Pour ch time step
     for i in range(l):
         # On veut jacobienne inv de chaque configuration de joint
